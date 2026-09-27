@@ -7,14 +7,15 @@
 # SITE must use the ssh (git@github.com:) form: the course autotest
 # (assignment-autotest/test/shared/buildroot-common-build.sh) records a
 # validation error and rewrites the file if this line starts with https.
-# VERSION is the published assignment-4-part-1 commit.
-AESD_ASSIGNMENTS_VERSION = 27ff3c5d0e9287ba77cabf5aebb9255d5cc0785f
+# VERSION is the published assignment 5 part 1 commit (adds server/aesdsocket).
+AESD_ASSIGNMENTS_VERSION = ad66f56f5536b605045f36a04da296c04773846a
 AESD_ASSIGNMENTS_SITE = git@github.com:cu-ecen-aeld/assignment-3-julian-werder.git
 AESD_ASSIGNMENTS_SITE_METHOD = git
 AESD_ASSIGNMENTS_GIT_SUBMODULES = YES
 
 define AESD_ASSIGNMENTS_BUILD_CMDS
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)/finder-app all
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)/server all
 endef
 
 define AESD_ASSIGNMENTS_INSTALL_TARGET_CMDS
@@ -31,6 +32,8 @@ define AESD_ASSIGNMENTS_INSTALL_TARGET_CMDS
 	done
 	$(INSTALL) -D -m 0755 $(AESD_ASSIGNMENTS_PKGDIR)/finder-test.sh $(TARGET_DIR)/usr/bin/finder-test.sh
 	$(INSTALL) -D -m 0755 $(AESD_ASSIGNMENTS_PKGDIR)/finder.sh $(TARGET_DIR)/usr/bin/finder.sh
+	$(INSTALL) -D -m 0755 $(@D)/server/aesdsocket $(TARGET_DIR)/usr/bin/aesdsocket
+	$(INSTALL) -D -m 0755 $(@D)/server/aesdsocket-start-stop $(TARGET_DIR)/etc/init.d/S99aesdsocket
 endef
 
 $(eval $(generic-package))
