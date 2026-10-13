@@ -1,0 +1,7 @@
+
+config BR2_PACKAGE_LDD
+	bool "ldd"
+	depends on BR2_LINUX_KERNEL
+	help
+	  LDD3 example kernel modules (misc-modules and scull) from the
+	  AESD assignment 7 repository (cu-ecen-aeld/assignment-7-julian-werder).
