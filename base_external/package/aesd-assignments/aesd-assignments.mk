@@ -7,11 +7,13 @@
 # SITE must use the ssh (git@github.com:) form: the course autotest
 # (assignment-autotest/test/shared/buildroot-common-build.sh) records a
 # validation error and rewrites the file if this line starts with https.
-# VERSION is the published assignment 5 part 1 commit (adds server/aesdsocket).
-AESD_ASSIGNMENTS_VERSION = ad66f56f5536b605045f36a04da296c04773846a
+# VERSION is the published assignment 8 commit (aesdchar driver, aesdsocket on /dev/aesdchar).
+AESD_ASSIGNMENTS_VERSION = 000194d3e6fe18909eb33660b629c34b7158572b
 AESD_ASSIGNMENTS_SITE = git@github.com:cu-ecen-aeld/assignment-3-julian-werder.git
 AESD_ASSIGNMENTS_SITE_METHOD = git
 AESD_ASSIGNMENTS_GIT_SUBMODULES = YES
+# Built and installed to /lib/modules/<release>/updates by the kernel-module infrastructure
+AESD_ASSIGNMENTS_MODULE_SUBDIRS = aesd-char-driver
 
 define AESD_ASSIGNMENTS_BUILD_CMDS
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)/finder-app all
@@ -34,6 +36,10 @@ define AESD_ASSIGNMENTS_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(AESD_ASSIGNMENTS_PKGDIR)/finder.sh $(TARGET_DIR)/usr/bin/finder.sh
 	$(INSTALL) -D -m 0755 $(@D)/server/aesdsocket $(TARGET_DIR)/usr/bin/aesdsocket
 	$(INSTALL) -D -m 0755 $(@D)/server/aesdsocket-start-stop $(TARGET_DIR)/etc/init.d/S99aesdsocket
+	$(INSTALL) -D -m 0755 $(@D)/aesd-char-driver/aesdchar_load $(TARGET_DIR)/usr/bin/aesdchar_load
+	$(INSTALL) -D -m 0755 $(@D)/aesd-char-driver/aesdchar_unload $(TARGET_DIR)/usr/bin/aesdchar_unload
+	$(INSTALL) -D -m 0755 $(AESD_ASSIGNMENTS_PKGDIR)/S97aesdchar $(TARGET_DIR)/etc/init.d/S97aesdchar
 endef
 
+$(eval $(kernel-module))
 $(eval $(generic-package))

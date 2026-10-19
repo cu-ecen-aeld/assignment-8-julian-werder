@@ -1,0 +1,20 @@
+#!/bin/sh
+# Init script for the aesdchar kernel module (assignment 8).
+# Installed by the aesd-assignments package as /etc/init.d/S97aesdchar, so it runs before
+# S99aesdsocket opens /dev/aesdchar. "start" loads the module with aesdchar_load (modprobe,
+# since the module is installed under /lib/modules) and creates /dev/aesdchar; "stop" unloads it.
+
+case "$1" in
+    start)
+        echo "Loading aesdchar"
+        /usr/bin/aesdchar_load
+        ;;
+    stop)
+        echo "Unloading aesdchar"
+        /usr/bin/aesdchar_unload
+        ;;
+    *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+        ;;
+esac

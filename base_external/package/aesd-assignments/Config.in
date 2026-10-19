@@ -1,8 +1,11 @@
 
 config BR2_PACKAGE_AESD_ASSIGNMENTS
 	bool "aesd-assignments"
+	depends on BR2_LINUX_KERNEL
 	help
 	  Includes the writer executable, finder.sh and tester.sh in the kernel image.
 	  Also includes the aesdsocket server (/usr/bin/aesdsocket) and its
 	  S99aesdsocket init script, which starts it in daemon mode at boot.
+	  Also builds the aesdchar kernel module, installs aesdchar_load and
+	  aesdchar_unload, and the S97aesdchar init script that loads it at boot.
 	  Used to understand buildroot external trees and package builds.
